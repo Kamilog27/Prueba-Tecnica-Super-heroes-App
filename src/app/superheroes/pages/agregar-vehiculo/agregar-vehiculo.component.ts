@@ -1,0 +1,16 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-agregar-vehiculo',
+  templateUrl: './agregar-vehiculo.component.html',
+  styles: [
+  ]
+})
+export class AgregarVehiculoComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}
