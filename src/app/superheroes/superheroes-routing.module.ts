@@ -18,7 +18,7 @@ const routes:Routes=[
         component:ListadoHeroesComponent
       },
       {
-        path:'agregar',
+        path:'agregarheroes',
         component:AgregarHeroesComponent
       },
       {
@@ -26,7 +26,7 @@ const routes:Routes=[
         component:AgregarHeroesComponent
       },
       {
-        path:'buscar',
+        path:'buscarheroes',
         component:BuscarHeroesComponent
       },
       {

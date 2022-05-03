@@ -1,0 +1,28 @@
+<mat-card *ngFor="let heroe of heroes" class="cards">
+    <mat-card-header>
+        <mat-card-title> {{heroe.nombre}} </mat-card-title>
+        <mat-card-subtitle> {{heroe.grupo}} </mat-card-subtitle>
+    </mat-card-header>
+    <div class="row">
+        <div class="col-md-6">
+            <img mat-card-image [src]="heroe.imagen" />
+        </div>
+        <div class="col-md-6">
+            <mat-card-content>
+                <h3>Información del Héroe</h3>
+                <h4>
+                    <strong>Ciudad: {{heroe.ciudad}}</strong>
+                    <br>
+                    <strong>Condición: {{heroe.condicion}} </strong>
+                    <br>
+                    <strong>Poder: {{heroe.poder}} </strong>
+                    <br>
+                    <strong>Vehiculo:{{heroe.vehiculo}}</strong>
+                </h4>
+            </mat-card-content>
+            <mat-card-actions >
+                <button class="w-100" mat-button color="warn" [routerLink]="['/superheroes/editar',heroe._id]">Editar</button>
+            </mat-card-actions>
+        </div>
+    </div>
+</mat-card>

@@ -1,1 +1,54 @@
-<p>buscar-heroes works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Buscador de Héroes</h1>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Búsqueda por nombre de Héroe</h1>
+            <mat-form-field class="example-full-width w-100" appearance="fill">
+                <input type="text"
+                       placeholder="Busqueda por nombre de Héroe"
+                       aria-label="Number"
+                       matInput
+                       [(ngModel)]="termino"
+                       [matAutocomplete]="auto"
+                       (input)="buscandoPorNombre()">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="opcionSeleccionada($event)">
+                  <mat-option *ngFor="let heroe of heroesNombre" [value]="heroe">
+                    {{heroe.nombre}}
+                  </mat-option>
+                  <mat-option value="" *ngIf="heroesNombre.length===0&&termino.trim().length>0">
+                    No se encontro nada con el término {{termino}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <app-superheroe-tarjeta *ngIf="heroeSeleccionado" [heroes]="heroeSeleccionado"></app-superheroe-tarjeta>
+        </div>
+        <div class="col-md-6">
+            <h1>Búsqueda por ciudad de Héroe</h1>
+            <mat-form-field class="example-full-width w-100" appearance="fill">
+                <input type="text"
+                       placeholder="Busqueda por ciudad de Héroe"
+                       aria-label="Number"
+                       matInput
+                       [(ngModel)]="terminoD"
+                       [matAutocomplete]="auto1"
+                       (input)="buscandoPorCiudad()">
+                <mat-autocomplete autoActiveFirstOption #auto1="matAutocomplete" (optionSelected)="opcionSeleccionadaD($event)">
+                  <mat-option *ngFor="let heroe of heroesCiudad" [value]="heroe">
+                    {{heroe.ciudad}}
+                  </mat-option>
+                  <mat-option value="" *ngIf="heroesCiudad.length===0&&terminoD.trim().length>0">
+                    No se encontro nada con el término {{terminoD}}
+                  </mat-option>
+                </mat-autocomplete>
+                
+              </mat-form-field>
+              <app-superheroe-tarjeta *ngIf="heroeSeleccionadoD" [heroes]="heroeSeleccionadoD"></app-superheroe-tarjeta>
+        </div>
+    </div>
+   
+</div>

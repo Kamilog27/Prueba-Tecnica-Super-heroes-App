@@ -1,1 +1,112 @@
-<p>agregar-heroes works!</p>
+<div class="container">
+    <form [formGroup]="miFormulario" (ngSubmit)="guardar()" autocomplete="off">
+        <div class="row">
+            <h1>Agregar Héroe</h1>
+
+            <div class="col-md-6">
+
+                <mat-form-field class="w-100">
+                    <mat-label>Nombre</mat-label>
+                    <input formControlName="nombre" matInput type="text" required>
+                    
+                </mat-form-field>
+                <span *ngIf="campoesValido('nombre')"> *El nombre debe tener al menos un caracter</span>
+
+            </div>
+            <div class="col-md-6">
+                <mat-form-field class="w-100">
+                    <mat-label>Grupo</mat-label>
+                    <mat-select formControlName="grupo" required>
+                        <mat-option *ngFor="let grupo of grupos" [value]="grupo.value">
+                            {{grupo.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <span *ngIf="campoesValido('grupo')"> *El grupo es obligatorio</span>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <mat-form-field class="w-100">
+                    <mat-label>Ciudad</mat-label>
+                    <input formControlName="ciudad" matInput type="text" required>
+                </mat-form-field>
+                <span *ngIf="campoesValido('ciudad')"> *La ciudad debe tener al menos dos caracteres</span>
+            </div>
+            <div class="col-md-6">
+                <mat-form-field class="w-100">
+                    <mat-label>Condición</mat-label>
+                    <mat-select required formControlName="condicion">
+                        <mat-option *ngFor="let condicion of condiciones" [value]="condicion.value">
+                            {{condicion.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <span *ngIf="campoesValido('condicion')"> *La condición es obligatoria</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+
+                <mat-form-field class="w-100">
+                    <mat-label>Poder</mat-label>
+                    <input formControlName="poder" matInput type="text" required>
+                </mat-form-field>
+                <span *ngIf="campoesValido('poder')"> *El poder es obligatorio</span>
+            </div>
+            <div class="col-md-6">
+                <mat-label>Vehiculo</mat-label>
+                <br>
+                <mat-radio-group formControlName="vehiculo" aria-labelledby="example-radio-group-label" class="example-radio-group"
+                    >
+                    <mat-radio-button class="example-radio-button" *ngFor="let tipo of tipos" [value]="tipo">
+                        {{tipo}}
+                    </mat-radio-button>
+                </mat-radio-group>
+                <span *ngIf="campoesValido('vehiculo')"> *Selecciona si tiene o no un vehiculo</span>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="validarVehiculo()">
+            <div class="col-md-6">
+                <mat-form-field class="w-100">
+                    <mat-label>Nombre de Vehiculo</mat-label>
+                    <input formControlName="nombreVehiculo" matInput type="text" required>
+                </mat-form-field>
+                <span *ngIf="campoesValido('nombreVehiculo')"> *El nombre del vehiculo es obligatorio</span>
+            </div>
+            <div class="col-md-6">
+                <mat-form-field class="w-100">
+                    <mat-label>Tipo</mat-label>
+                    <input formControlName="tipo" matInput type="text" required>
+                </mat-form-field>
+                <span *ngIf="campoesValido('tipo')"> *El tipo de vehiculo es obligatorio</span>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <mat-form-field class="w-100">
+                    <mat-label>Imagen Url</mat-label>
+                    <input formControlName="imagen" matInput type="text" required>
+                </mat-form-field>
+                <span *ngIf="campoesValido('imagen')"> *La imagen es obligatoria</span>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+
+                <button class="w-100" mat-button color="warn">
+                    <mat-icon>edit</mat-icon>
+                    Guardar
+                </button>
+
+            </div>
+        </div>
+    </form>
+</div>

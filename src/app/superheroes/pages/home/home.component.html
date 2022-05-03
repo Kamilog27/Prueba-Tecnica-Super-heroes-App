@@ -1,3 +1,36 @@
-<h1>Super Hérores</h1>
-<hr>
-<router-outlet></router-outlet>
+<mat-sidenav-container fullscreen>
+    <mat-sidenav #sidenav mode="push">
+        <mat-toolbar color="warn">
+            <span>Menú</span>
+        </mat-toolbar>
+        <mat-nav-list>
+            <a routerLink="./listadoheroes" mat-list-item (click)="sidenav.toggle()">
+                <mat-icon mat-list-icon>label</mat-icon>
+                <span>Listado de heroes</span>
+            </a>
+            <a routerLink="./agregarheroes" mat-list-item (click)="sidenav.toggle()">
+                <mat-icon mat-list-icon>add</mat-icon>
+                <span>Añadir heroes</span>
+            </a>
+            <a routerLink="./buscarheroes" mat-list-item (click)="sidenav.toggle()">
+                <mat-icon mat-list-icon>search</mat-icon>
+                <span>Búscar heroes</span>
+            </a>
+            <a routerLink="./listadovehiculos" mat-list-item (click)="sidenav.toggle()">
+                <mat-icon mat-list-icon>label</mat-icon>
+                <span>Listado vehiculos</span>
+            </a>
+
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-toolbar>
+        <button mat-icon-button (click)="sidenav.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+    </mat-toolbar>
+
+    <div class="container">
+        <router-outlet></router-outlet>
+    </div>
+</mat-sidenav-container>

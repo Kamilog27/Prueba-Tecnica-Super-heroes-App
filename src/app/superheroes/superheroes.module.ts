@@ -7,6 +7,9 @@ import { HomeComponent } from './pages/home/home.component';
 import { ListadoHeroesComponent } from './pages/listado-heroes/listado-heroes.component';
 import { ListadoVehiculosComponent } from './pages/listado-vehiculos/listado-vehiculos.component';
 import { SuperheroesRoutingModule } from './superheroes-routing.module';
+import { MaterialModule } from '../material/material.module';
+import { SuperheroeTarjetaComponent } from './components/superheroe-tarjeta/superheroe-tarjeta.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -17,11 +20,15 @@ import { SuperheroesRoutingModule } from './superheroes-routing.module';
     AgregarVehiculoComponent,
     HomeComponent,
     ListadoHeroesComponent,
-    ListadoVehiculosComponent
+    ListadoVehiculosComponent,
+    SuperheroeTarjetaComponent
   ],
   imports: [
     CommonModule,
-    SuperheroesRoutingModule
+    SuperheroesRoutingModule,
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class SuperheroesModule { }
