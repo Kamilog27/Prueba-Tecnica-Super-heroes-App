@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Hero } from '../../interfaces/heroes.interface';
+import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { HeroesService } from '../../services/heroes.service';
+import { switchMap } from 'rxjs';
 interface Grupo {
   value: string,
   viewValue: string
@@ -24,23 +26,17 @@ export class AgregarHeroesComponent implements OnInit {
     { value: "Villanos", viewValue: 'Villanos' }
   ]
   condiciones: Condicion[] = [
-    { value: "Libertad", viewValue: 'Libertad' },
+    { value: "Libre", viewValue: 'Libre' },
     { value: "Detenido", viewValue: 'Detenido' },
     { value: "Desconocido", viewValue: 'Desconocido' }
   ]
-  heroe: Hero = {
-    nombre: '',
-    grupo: '',
-    ciudad: '',
-    condicion: '',
-    poder: [],
-    vehiculo: '',
-    imagen: ''
-  }
 
-  tipos: string[] = ["Si", "No"];
+  tipo: string[] = ["Si", "No"];
 
-  constructor(private activatedRoute: ActivatedRoute, private fb: FormBuilder) { }
+  paginaEditar: Boolean = false;
+
+  constructor(private activatedRoute: ActivatedRoute, private fb: FormBuilder,
+    private heroeService: HeroesService, private router: Router) { }
 
   miFormulario: FormGroup = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(1)]],
@@ -54,22 +50,116 @@ export class AgregarHeroesComponent implements OnInit {
     imagen: ['', [Validators.required]]
   })
 
+  miFormularioEditar: FormGroup = this.fb.group({
+    nombre: ['', [Validators.required, Validators.minLength(1)]],
+    ciudad: ['', [Validators.required, Validators.minLength(2)]],
+  })
   ngOnInit(): void {
-    this.activatedRoute.params
-      .subscribe(_id => {
-        console.log(_id)
-      })
+    if (this.router.url.includes('editar')) {
+      this.paginaEditar = true;
+
+      this.activatedRoute.params
+        .pipe(
+          switchMap(({ id }) => this.heroeService.getHeroe(id))
+        )
+        .subscribe((heroe: any) => {
+          console.log(heroe);
+          this.miFormularioEditar.get('nombre')?.setValue(heroe.heroe.nombre);
+          this.miFormularioEditar.get('ciudad')?.setValue(heroe.heroe.ciudad);
+
+        })
+    }
+     
+    
+  }
+  editar(){
+    if (this.miFormularioEditar.invalid) {
+      this.miFormularioEditar.markAllAsTouched();
+      return;
+    }
+    console.log('editar');
+    this.activatedRoute.params.subscribe(({id})=>{
+      let heroeId=id;
+      let nombreH=this.miFormularioEditar.get('nombre')?.value;
+      let ciudadH=this.miFormularioEditar.get('ciudad')?.value;
+      this.heroeService.putHeroes(heroeId,nombreH,ciudadH)
+        .subscribe((resp:any)=>{
+          console.log(resp);
+          Swal.fire({
+            icon: 'success',
+            title: 'Éxito!!!',
+            text: `${resp.msg}`,
+            showClass: {
+              popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+              popup: 'animate__animated animate__fadeOutUp'
+            }
+  
+          })
+          this.router.navigateByUrl('superheroes/listadoheroes');
+        })
+    })
+    
+
   }
   guardar() {
     if (this.miFormulario.invalid) {
       this.miFormulario.markAllAsTouched();
       return;
     }
-    console.log(this.miFormulario.value);
+
+    let poderStr = this.miFormulario.get('poder')?.value;
+    let convertirArr = poderStr.split(',');
+
+    this.miFormulario.get('poder')?.setValue(convertirArr);
+
+    let nomVehiculo = this.miFormulario.get('nombreVehiculo')?.value;
+    let tipoVehiculo = this.miFormulario.get('tipo')?.value;
+
+    this.heroeService.postHeroes(this.miFormulario.value)
+      .subscribe((res: any) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito!!!',
+          text: 'El Heroe Se Creó Exitosamente',
+          showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+          },
+          hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+          }
+        })
+        this.router.navigateByUrl('superheroes/listadoheroes');
+        if (res.heroe.vehiculo == 'No') {
+
+        } else if (res.heroe.vehiculo == 'Si') {
+          let heroeId = res.heroe._id;
+          this.heroeService.postVehiculo(nomVehiculo, tipoVehiculo, heroeId)
+            .subscribe((res: any) => {
+              Swal.fire({
+                icon: 'success',
+                title: 'Éxito!!!',
+                text: 'El Heroe Se Creó Exitosamente',
+                showClass: {
+                  popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                  popup: 'animate__animated animate__fadeOutUp'
+                }
+
+              })
+              this.router.navigateByUrl('superheroes/listadoheroes');
+            })
+        }
+      })
     this.miFormulario.reset();
   }
   campoesValido(campo: string) {
     return this.miFormulario.get(campo)?.invalid && this.miFormulario.get(campo)?.touched;
+  }
+  campoesValidoEditar(campo: string) {
+    return this.miFormularioEditar.get(campo)?.invalid && this.miFormularioEditar.get(campo)?.touched;
   }
 
   validarVehiculo() {
