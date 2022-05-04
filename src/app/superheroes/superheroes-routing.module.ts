@@ -36,7 +36,12 @@ const routes:Routes=[
       {
         path:'agregarvehiculo',
         component:AgregarVehiculoComponent
+      },
+      {
+        path:'**',
+        redirectTo:'listadoheroes'
       }
+
     ]
   }
 ]
